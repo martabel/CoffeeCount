@@ -36,19 +36,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="UI_Elements\Button\ButtonNormalMenu.cs" />
     <Compile Include="Utility\CoffeeDrinkerUtilityClaas.cs" />
     <Compile Include="Data\CoffeeClaas.cs" />
     <Compile Include="Data\CoffeeDatabase.cs" />
     <Compile Include="Data\CoffeeDrinkerClass.cs" />
     <Compile Include="ILocalFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI_Elements\ButtonForCoffeeDrinker.cs" />
+    <Compile Include="UI_Elements\Button\ButtonForCoffeeDrinker.cs" />
     <Compile Include="UI_Elements\ContentPageAddCoffeeForUser.cs" />
     <Compile Include="UI_Elements\ContentPageAddNewUser.cs" />
-    <Compile Include="UI_Elements\EntryInputElement.cs" />
-    <Compile Include="UI_Elements\GridForUserInputList.cs" />
-    <Compile Include="UI_Elements\GridForUserInputForString.cs" />
-    <Compile Include="UI_Elements\LabelForInput.cs" />
+    <Compile Include="UI_Elements\InputElement\EntryInputElement.cs" />
+    <Compile Include="UI_Elements\InputElement\GridForUserInputList.cs" />
+    <Compile Include="UI_Elements\InputElement\GridForUserInputForString.cs" />
+    <Compile Include="UI_Elements\InputElement\LabelForInput.cs" />
     <Compile Include="UI_Elements\ContentPageUserSetting.cs" />
     <Compile Include="UI_Elements\MainMenu.cs" />
   </ItemGroup>
@@ -73,6 +74,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.224\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -22,6 +22,7 @@ namespace CoffeeDrinkCount.UI_Elements
         GridForUserInputForString gridUserInputVorname = new GridForUserInputForString("Vorname:", "Bitte angeben", Color.Gray, Color.White);
         GridForUserInputForString gridUserInputName = new GridForUserInputForString("Name:", "Bitte angeben", Color.Gray, Color.White);
         GridForUserInputForString gridUserInputChipId = new GridForUserInputForString("ChipId:", "Id z.B. 298746", Color.Gray, Color.White);
+        GridForUserInputList gridUserListForDelete;
         Button buttonAddNewUser = new Button(); // Button zum Erzeugen eines neuen Users
 
 
@@ -30,6 +31,8 @@ namespace CoffeeDrinkCount.UI_Elements
             coffeeDatabase = _coffeedatabase; // Daten übergeben
 
             coffeeDrinkerList = coffeeDatabase.GetCoffeeDrinkers(); // Liste der Kaffeetrinker
+
+            gridUserListForDelete = new GridForUserInputList("Benutzer wählen",coffeeDrinkerList.Select(x => x.Firstname + " " + x.Name).ToList());
 
             this.Title = "Benutzer hinzufügen"; // Menü überschrift
 
@@ -44,7 +47,7 @@ namespace CoffeeDrinkCount.UI_Elements
 
             //buttonAddNewUser.FontSize = 20; //  NamedSize.Large;
             ScrollView scrollView = new ScrollView();
-            
+
             scrollView.Content = new StackLayout
             {
                 Margin = 10,
@@ -60,6 +63,7 @@ namespace CoffeeDrinkCount.UI_Elements
                         {
                             BackgroundColor = Color.FromHex("DDC9B2"),
                             HorizontalOptions = LayoutOptions.FillAndExpand,
+                            WidthRequest = 20,
                         },
                         buttonAddNewUser,
                         new BoxView() // Platzhalter
@@ -67,18 +71,23 @@ namespace CoffeeDrinkCount.UI_Elements
                             BackgroundColor = Color.FromHex("DDC9B2"),
                             HorizontalOptions = LayoutOptions.FillAndExpand,
                         },
+                        gridUserListForDelete,
+
         }
             };
 
             this.Content = scrollView;
         }
 
+
+
+        #region ButtonAddNewUser_Clicked
         private async void ButtonAddNewUser_Clicked(object sender, EventArgs e)
         {
             CoffeeDrinker newCoffeeDrinker = new CoffeeDrinker();
 
             // To DO - Wenn Felder leer! Benutzer nicht speichern!
-            if (gridUserInputVorname.GetValue() != null || gridUserInputVorname.GetValue() != "" && gridUserInputName.GetValue() != null || gridUserInputName.GetValue() !="")
+            if (gridUserInputVorname.GetValue() != null || gridUserInputVorname.GetValue() != "" && gridUserInputName.GetValue() != null || gridUserInputName.GetValue() != "")
             {
                 newCoffeeDrinker.Firstname = gridUserInputVorname.GetValue();
                 newCoffeeDrinker.Name = gridUserInputName.GetValue();
@@ -118,10 +127,12 @@ namespace CoffeeDrinkCount.UI_Elements
             else
             {// Wenn eins der beiden Felder leer ist,
                 //dann wird dem Nutzer ein Hinweis eingeblendet
-                await DisplayAlert("Speichern nicht möglich!", "Die Felder \"Vornam\" und \"Name\" dürfen nicht leer sein!","OK");
+                await DisplayAlert("Speichern nicht möglich!", "Die Felder \"Vorname\" und \"Name\" dürfen nicht leer sein!", "OK");
             }
 
-        }
+        } 
+
+        #endregion
 
 
 

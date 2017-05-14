@@ -24,7 +24,7 @@ namespace CoffeeDrinkCount
                 coffeeDatabase = new CoffeeDatabase(new SQLiteConnection(path));
 
             // The root page of your application
-            MainPage = new NavigationPage(new MainMenu(coffeeDatabase, path))
+            MainPage = new NavigationPage(new MainMenu(coffeeDatabase))
             {
                 BarBackgroundColor = Color.FromHex("573715"),
             };

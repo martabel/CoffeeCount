@@ -37,22 +37,20 @@ namespace CoffeeDrinkCount.UI_Elements
             listWithUser.VerticalOptions = LayoutOptions.StartAndExpand;
             listWithUser.BackgroundColor = Color.FromHex("DDC9B2");
 
+            #region Jeder Benutzer bekommt einen Button und wird zum Stacklayout hinzugefügt
             foreach (var item in coffeeDrinkerList)
             {
                 int numberOfCoffee = CoffeeDrinkerUtility.countCoffeeForCoffeeDrinkerPerActualMonth(item.ID, coffeeList);
 
-                ButtonForCoffeeDrinker userAddCoffeeDrinker = new ButtonForCoffeeDrinker(item,numberOfCoffee,Color.FromHex("A36827"), Color.White);
+                ButtonForCoffeeDrinker userAddCoffeeDrinker = new ButtonForCoffeeDrinker(item, numberOfCoffee, Color.FromHex("A36827"), Color.White);
 
                 userAddCoffeeDrinker.HorizontalOptions = LayoutOptions.FillAndExpand;
 
                 userAddCoffeeDrinker.PropertyChanged += UserAddCoffee_Clicked;
 
-               // userAddCoffeeDrinker.Clicked += UserAddCoffee_Clicked;
-
-
                 listWithUser.Children.Add(userAddCoffeeDrinker);
-            }
-
+            } 
+            #endregion
 
             scrollView.Content = listWithUser;
 

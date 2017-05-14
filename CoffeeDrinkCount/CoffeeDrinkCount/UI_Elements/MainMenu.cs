@@ -13,16 +13,18 @@ namespace CoffeeDrinkCount.UI_Elements
     {
         CoffeeDatabase coffeedatabase;
 
-        public MainMenu(CoffeeDatabase _coffeeDatabase, string path)
+        public MainMenu(CoffeeDatabase _coffeeDatabase)
         {
             coffeedatabase = _coffeeDatabase;
 
             Title = "Kaffeeverwaltung";
             BackgroundColor = Color.FromHex("DDC9B2");
             Icon = "coffeemachine_2_comlete_white.png";
-            
 
+            ButtonNormalMenu buttonAddContentPageUserSetting = new ButtonNormalMenu("Benutzerverwaltung");
             buttonAddContentPageUserSetting.Clicked += OnAddContentPageAddUserClicked;
+
+            ButtonNormalMenu buttonShowEntrys = new ButtonNormalMenu("Kaffee trinken");
             buttonShowEntrys.Clicked += OnButtonAddContentPageUserSetting_Clicked;
 
             ScrollView scrollViewMainMenu = new ScrollView();
@@ -34,6 +36,7 @@ namespace CoffeeDrinkCount.UI_Elements
 
             listWithUser.Children.Add(buttonShowEntrys);
             listWithUser.Children.Add(buttonAddContentPageUserSetting);
+            //listWithUser.Children.Add(watingForOpenPage);
 
            scrollViewMainMenu.Content = listWithUser;
 
@@ -42,56 +45,29 @@ namespace CoffeeDrinkCount.UI_Elements
         }
 
 
-
+        #region OnButtonAddContentPageUserSetting_Clicked
+        /// <summary>
+        /// Wenn der Button geklickt wird, dann wir die Seite, mit den Button der Kaffetrinker aufgerufen
+        /// </summary>
+        /// <param name="sender">Auslöser des Events</param>
+        /// <param name="e">Details zum ausgelösten Event</param>
         private void OnButtonAddContentPageUserSetting_Clicked(object sender, EventArgs e)
         {
-            ActivityIndicator watingForOpenPage = new ActivityIndicator();
-
-            watingForOpenPage.Color = Color.White;
-            watingForOpenPage.IsRunning = true;
-         //   buttonAddContentPageUserSetting.Navigation.PushAsync(new ContentPageAddCoffeeForUser(coffeedatabase));
-           // watingForOpenPage.IsRunning = false;
+            Navigation.PushAsync(new ContentPageAddCoffeeForUser(coffeedatabase));
         }
+        #endregion
 
+        #region OnButtonAddContentPageUserSetting_Clicked
+        /// <summary>
+        /// Wenn der Button geklickt wird, dann wir die Benutzerverwaltung aufgerufen
+        /// </summary>
+        /// <param name="sender">Auslöser des Events</param>
+        /// <param name="e">Details zum ausgelösten Event</param>
         private void OnAddContentPageAddUserClicked(object sender, EventArgs e)
         {
-            buttonAddContentPageUserSetting.Navigation.PushAsync(new ContentPageUserSetting(coffeedatabase));
-        }
-
-
-
-        Button buttonAddContentPageUserSetting = new Button()
-        {
-            Margin = new Thickness(10, 4, 10, 4),
-            Text = "Benutzerverwaltung",
-            //Image = new FileImageSource() { File = "timer.png" },
-            // Font = Font.SystemFontOfSize(NamedSize.Large),
-            TextColor = Color.White,
-            // BorderWidth = 1,
-            BackgroundColor = Color.FromHex("A36827"),
-            HorizontalOptions = LayoutOptions.FillAndExpand,
-            VerticalOptions = LayoutOptions.Start,
-            HeightRequest = 100,
-           // WidthRequest = 300
-        };
-
-
-        Button buttonShowEntrys = new Button()
-        {
-            Margin = new Thickness(10, 4, 10, 4),
-            Text = "Kaffee trinken",
-            //Image = new FileImageSource() { File = "timer.png" },
-            // Font = Font.SystemFontOfSize(NamedSize.Large),
-            TextColor = Color.White,
-            // BorderWidth = 1,
-            BackgroundColor = Color.FromHex("A36827"),
-            //HorizontalOptions = LayoutOptions.Center,
-            //  VerticalOptions = LayoutOptions.FillAndExpand,
-            HorizontalOptions = LayoutOptions.FillAndExpand,
-            VerticalOptions = LayoutOptions.Start,
-            HeightRequest = 100,
-            //WidthRequest = 300
-        };
+            Navigation.PushAsync(new ContentPageUserSetting(coffeedatabase));
+        } 
+        #endregion
 
     }
 }
