@@ -16,12 +16,10 @@ namespace CoffeeDrinkCount.UI_Elements
         Picker inputFieldUserNames = new Picker()
         {
             HorizontalOptions = LayoutOptions.FillAndExpand,
-            Title = "Benutzer löschen:",
+            Title = "Auswählen",
         };
 
         LabelForInput labelForInput;// wird im Konstrukor Initialisiert
-
-
 
 
         private string inputFieldValueText; // Eingabetext des Nutzers
@@ -54,7 +52,8 @@ namespace CoffeeDrinkCount.UI_Elements
             inputFieldUserNames.SelectedIndex = 0;
             inputFieldUserNames.SelectedIndexChanged += InputFieldMinutes_SelectedIndexChanged;
 
-            inputFieldUserNames.ItemsSource.Add(listOfStrings);
+            //Strings dem Auswahl-Elemente (Picker) zuordnen
+            SetItems(listOfStrings);
 
             labelForInput = new LabelForInput(labelDescription, Color.FromHex("D68933"), Color.Black);
 
@@ -73,7 +72,6 @@ namespace CoffeeDrinkCount.UI_Elements
 
             grid.Children.Add(labelForInput, 0, 0);
             grid.Children.Add(inputFieldUserNames, 1, 0);
-            // grid.Children.Add(new LabelForInput(labelUnit, backgroundColor, textColor), 2, 0);
 
             this.Content = grid; // Das Grid wird dieser Seite als Inhalt übergeben
         }
@@ -88,18 +86,37 @@ namespace CoffeeDrinkCount.UI_Elements
         {
            // InputFieldValue = inputFieldUserNames.SelectedItem.ToString(); //throw new NotImplementedException();
         }
-        
+
+
+        public void SetItems(List<string> listOfItems)
+        {
+            foreach (var item in listOfItems)
+            {
+                inputFieldUserNames.Items.Add(item);
+            }
+        }
 
 
         #region GetValue()
         /// <summary>
-        /// Gibt den aktuellen Text des Eingabefeldes zurück
+        /// Gibt den aktuellen Text des aktiven Items zurück
         /// </summary>
         /// <returns></returns>
         public string GetValue()
         {
             return inputFieldUserNames.SelectedItem.ToString();
-        } 
+        }
+        #endregion
+
+        #region GetValue()
+        /// <summary>
+        /// Gibt den aktuellen Index des aktiven Items zurück
+        /// </summary>
+        /// <returns></returns>
+        public int GetIndex()
+        {
+            return inputFieldUserNames.SelectedIndex;
+        }
         #endregion
 
 
