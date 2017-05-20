@@ -36,8 +36,10 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="placeholderText">Dieser Text wird, vor der ersten Eingabe in dem Entry Objekt angegeben.</param>
         /// <param name="backgroundColor">Die Hintergrundfarbe des Objektes</param>
         /// <param name="textColor">Die Text Farbe des Objektes</param>
-        public EntryInputfield(string placeholderText, Color backgroundColor, Color textColor)
+        public EntryInputfield(string placeholderText, Color textColor)
         {
+            Color backgroundColor = Color.Transparent;
+
             Text = "";
             TextColor = textColor;
             Placeholder = placeholderText;

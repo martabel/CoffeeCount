@@ -38,18 +38,21 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="placeholderText">Dieser Text wird, vor der ersten Eingabe in dem Entry Objekt angegeben.</param>
         /// <param name="backgroundColor">Die Hintergrundfarbe des Objektes</param>
         /// <param name="textColor">Die Text Farbe des Objektes</param>
-        public GridForUserInputForString(string labelDescription, string placeholderText, Color backgroundColor, Color textColor)
+        public GridForUserInputForString(string labelDescription, string placeholderText)
         {
+            Color backgroundColor = Color.FromHex("D68933");
+            Color textColor = Color.Black;
+
             Margin = Margin = new Thickness(6, 2, 6, 0);
 
-            inputField = new EntryInputfield(placeholderText, Color.FromHex("D68933"), Color.Black);// backgroundColor, textColor);
+            inputField = new EntryInputfield(placeholderText, textColor);// backgroundColor, textColor);
             inputField.TextChanged += inputField_TextChanged;
             
-            labelForInput = new LabelForInput(labelDescription, Color.FromHex("D68933"), Color.Black);
+            labelForInput = new LabelForInput(labelDescription, textColor);
 
             Grid grid = new Grid
             {
-                BackgroundColor = Color.Yellow,
+                BackgroundColor = backgroundColor,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 ColumnSpacing = 0,
                 #region RowDefinitions -

@@ -45,21 +45,24 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="textColor">Die Text Farbe des Objektes</param>
         public GridForUserInputList(string labelDescription, List<string> listOfStrings) // string placeholderText, Color backgroundColor, Color textColor)
         {
+            Color backgroundColor = Color.FromHex("D68933");
+            Color textColor = Color.Black;
+
             Margin = Margin = new Thickness(6, 2, 6, 0);
 
-            inputFieldUserNames.BackgroundColor = Color.FromHex("D68933");
-            inputFieldUserNames.TextColor = Color.Black;
+            inputFieldUserNames.BackgroundColor = backgroundColor;
+            inputFieldUserNames.TextColor = textColor;
             inputFieldUserNames.SelectedIndex = 0;
             inputFieldUserNames.SelectedIndexChanged += InputFieldMinutes_SelectedIndexChanged;
 
             //Strings dem Auswahl-Elemente (Picker) zuordnen
             SetItems(listOfStrings);
 
-            labelForInput = new LabelForInput(labelDescription, Color.FromHex("D68933"), Color.Black);
+            labelForInput = new LabelForInput(labelDescription, textColor);
 
             Grid grid = new Grid
             {
-                BackgroundColor = Color.Yellow,
+                BackgroundColor = backgroundColor,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 ColumnSpacing = 0,
 

@@ -7,27 +7,33 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using CoffeeDrinkCount.Data;
 using CoffeeDrinkCount.Utility;
+using CoffeeDrinkCount.Model;
 
 namespace CoffeeDrinkCount.UI_Elements
 {
     class ContentPageAddCoffeeForUser : ContentPage
     {
-        CoffeeDatabase coffeeDatabase;
+        private ModelCoffeeDatabase modelCoffeeDatabase;
 
-        IEnumerable<OneCoffee> coffeeList;
+        //IEnumerable<OneCoffee> coffeeList;
 
-        IEnumerable<CoffeeDrinker> coffeeDrinkerList;
+        //IEnumerable<CoffeeDrinker> coffeeDrinkerList;
 
-        public ContentPageAddCoffeeForUser(CoffeeDatabase _coffeedatabase)
+        public ContentPageAddCoffeeForUser(ModelCoffeeDatabase pModelCoffeeDatabase)
         {
             this.Title = "Kaffee trinken";
             this.BackgroundColor = Color.FromHex("DDC9B2");
+            this.Icon = "coffeemachine_2_comlete_white.png";
+            
 
-            coffeeDatabase = _coffeedatabase;
+            ToolbarItem toolbarSettings = new ToolbarItem();
+            toolbarSettings.Icon = "settings_white.png";
+            toolbarSettings.Clicked += ToolbarSettings_Clicked;
 
-            coffeeList = coffeeDatabase.GetCoffees();
 
-            coffeeDrinkerList = coffeeDatabase.GetCoffeeDrinkers();
+            ToolbarItems.Add(toolbarSettings);
+
+            modelCoffeeDatabase = pModelCoffeeDatabase;
 
             ScrollView scrollView = new ScrollView();
             //scrollView
@@ -38,17 +44,15 @@ namespace CoffeeDrinkCount.UI_Elements
             listWithUser.BackgroundColor = Color.FromHex("DDC9B2");
 
             #region Jeder Benutzer bekommt einen Button und wird zum Stacklayout hinzugefügt
-            foreach (var item in coffeeDrinkerList)
+            foreach (var item in modelCoffeeDatabase.coffeeDrinkerList)
             {
-                int numberOfCoffee = CoffeeDrinkerUtility.countCoffeeForCoffeeDrinkerPerActualMonth(item.ID, coffeeList);
+                int numberOfCoffee = CoffeeDrinkerUtility.countCoffeeForCoffeeDrinkerPerActualMonth(item.ID, modelCoffeeDatabase.coffeeList);
 
-                ButtonForCoffeeDrinker userAddCoffeeDrinker = new ButtonForCoffeeDrinker(item, numberOfCoffee, Color.FromHex("A36827"), Color.White);
+                ButtonForCoffeeDrinker buttonUserAddCoffeeDrinker = new ButtonForCoffeeDrinker(item, numberOfCoffee);
+                buttonUserAddCoffeeDrinker.HorizontalOptions = LayoutOptions.FillAndExpand;
+                buttonUserAddCoffeeDrinker.PropertyChanged += UserAddCoffee_Clicked;
 
-                userAddCoffeeDrinker.HorizontalOptions = LayoutOptions.FillAndExpand;
-
-                userAddCoffeeDrinker.PropertyChanged += UserAddCoffee_Clicked;
-
-                listWithUser.Children.Add(userAddCoffeeDrinker);
+                listWithUser.Children.Add(buttonUserAddCoffeeDrinker);
             } 
             #endregion
 
@@ -57,15 +61,20 @@ namespace CoffeeDrinkCount.UI_Elements
             this.Content = scrollView;
         }
 
+        private void ToolbarSettings_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ContentPageUserSetting(modelCoffeeDatabase));
+        }
+
         public async void UserAddCoffee_Clicked(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "FieldForChanges")
             {// Wenn sich das Feld im ContentView ändert, dann
 
-                //Ermittel den Nutzer, der gerade seinen Button betätigt hat.
-                ButtonForCoffeeDrinker userDrinkCoffee = (ButtonForCoffeeDrinker)sender;
+                //Ermittelt den Nutzer, der gerade seinen Button betätigt hat.
+                ButtonForCoffeeDrinker buttonUserDrinkCoffee = (ButtonForCoffeeDrinker)sender;
 
-                CoffeeDrinker coffeeDrinkerNow = userDrinkCoffee.GetCoffeeDrinker();
+                CoffeeDrinker coffeeDrinkerNow = buttonUserDrinkCoffee.GetCoffeeDrinker();
                 //
                 var answer = await DisplayAlert("Hallo " + coffeeDrinkerNow.Firstname + " " + coffeeDrinkerNow.Name + ",", "hast du dir einen Kaffee genommen?", "Ja", "Nein");
 
@@ -73,15 +82,9 @@ namespace CoffeeDrinkCount.UI_Elements
                 {// Wenn der Nutzer bestätigt, dass er gerade einen Kaffee getrunken hat.
                     // dann wird ein neuer Kaffee mit der Id des Nutzers der Datenbank hinzugefügt
 
-                    OneCoffee coffee = new OneCoffee();
+                    modelCoffeeDatabase.AddOneCoffeeForUserById(coffeeDrinkerNow.ID);
 
-                    coffee.CoffeeCosumer_Id = coffeeDrinkerNow.ID.ToString();
-                    coffee.Payed = false;
-                    coffee.DateTime = DateTime.Now.ToString();
-
-                    coffeeDatabase.SaveCoffee(coffee);
-
-                    userDrinkCoffee.AddOneCoffee(); // Label wird um 1 erhöht
+                    buttonUserDrinkCoffee.AddOneCoffee(); // Label wird um 1 erhöht
                 }
             }
         }

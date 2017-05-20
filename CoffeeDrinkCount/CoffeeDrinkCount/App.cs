@@ -6,27 +6,23 @@ using SQLite;
 
 using Xamarin.Forms;
 
+
 using CoffeeDrinkCount.Data;
 using CoffeeDrinkCount.UI_Elements;
+using CoffeeDrinkCount.Model;
 
 namespace CoffeeDrinkCount
 {
     public class App : Application
     {
-        string path = "Fehler!";
-
-        public CoffeeDatabase coffeeDatabase;
+        ModelCoffeeDatabase modelCoffeeDatabase = new ModelCoffeeDatabase();
 
         public App()
         {
-                path = DependencyService.Get<ILocalFileHelper>().GetLocalFilePath("CoffeeDatabase.db3");
-
-                coffeeDatabase = new CoffeeDatabase(new SQLiteConnection(path));
-
             // The root page of your application
-            MainPage = new NavigationPage(new MainMenu(coffeeDatabase))
+            MainPage = new NavigationPage(new ContentPageAddCoffeeForUser(modelCoffeeDatabase)) // MainMenu(modelCoffeeDatabase))
             {
-                BarBackgroundColor = Color.FromHex("573715"),
+                BarBackgroundColor = Color.FromHex("573715"), // Farbe der Leiste Oben - Mittel Braun - Bar Farbe
             };
         }
 

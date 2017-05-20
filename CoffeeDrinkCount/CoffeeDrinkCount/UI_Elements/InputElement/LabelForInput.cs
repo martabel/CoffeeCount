@@ -14,18 +14,21 @@ namespace CoffeeDrinkCount.UI_Elements
         #region Konstruktor
         /// <summary>
         /// Konstruktor
-        /// Das Design des Labels kann hier angegeben werden. Hierzu kann
-        /// die Hintergrundfarbe und die Textfarbe angegeben werden.
+        /// Das Design des Labels kann hier angegeben werden.
+       /// Der Hintergrund des Labels ist immer Transparent
+       /// Angegeben werden kann die Textfarbe
         /// Es muss außerdem der Text des Labels festgelegt werden
         /// </summary>
         /// <param name="labelText">Der Text der angezeigt werden soll"</param>
-        /// <param name="backgroundColor">Die Hintergrundfarbe des Objektes</param>
-        /// <param name="textColor">Die Text Farbe des Objektes</param>
-        public LabelForInput(string labelText, Color backgroundColor, Color textColor)
+        /// <param name="textColor">Die Text Farbe des Labels</param>
+        public LabelForInput(string labelText, Color textColor)
         {
+            Color backgroundColor = Color.Transparent;
+
             Text = labelText;
             TextColor = textColor;
-            BackgroundColor = backgroundColor;
+
+            BackgroundColor = Color.Transparent;
             VerticalTextAlignment = TextAlignment.Center;
             HorizontalTextAlignment = TextAlignment.Center;
             LineBreakMode = LineBreakMode.CharacterWrap;

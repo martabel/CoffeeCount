@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using CoffeeDrinkCount.Data;
+using CoffeeDrinkCount.Model;
 
 namespace CoffeeDrinkCount.UI_Elements
 {
     class ContentPageUserSetting : ContentPage
     {
+        private ModelCoffeeDatabase modelCoffeeDatabase;
 
-        CoffeeDatabase coffeedatabase;
-
-        public ContentPageUserSetting(CoffeeDatabase _coffeeDatabase )
+        public ContentPageUserSetting(ModelCoffeeDatabase pModelCoffeeDatabase)
         {
-            coffeedatabase = _coffeeDatabase;
+            modelCoffeeDatabase = pModelCoffeeDatabase;
 
-            Title = "Benutzerverwaltung";
+            Title = "Einstellungen";
+            this.Icon = "settings_white.png";
             BackgroundColor = Color.FromHex("DDC9B2");
 
             ScrollView scrollViewUserSetting = new ScrollView();
-
 
             ButtonNormalMenu buttonOpenContentPageAddNewUser = new ButtonNormalMenu("Benutzer hinzufügen");
             buttonOpenContentPageAddNewUser.Clicked += ButtonOpenContentPageAddNewUser_Clicked;
@@ -46,7 +46,7 @@ namespace CoffeeDrinkCount.UI_Elements
 
         private void ButtonOpenContentPageAddNewUser_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ContentPageAddNewUser(coffeedatabase));
+            Navigation.PushAsync(new ContentPageAddNewUser(modelCoffeeDatabase));
         }
 
 

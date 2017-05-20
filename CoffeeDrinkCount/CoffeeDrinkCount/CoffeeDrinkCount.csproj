@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Controller\ControllerAddCofeeForUsers.cs" />
+    <Compile Include="Controller\ControllerSettings.cs" />
+    <Compile Include="Model\ModelCoffeeDatabase.cs" />
     <Compile Include="UI_Elements\Button\ButtonNormalMenu.cs" />
     <Compile Include="Utility\CoffeeDrinkerUtilityClaas.cs" />
     <Compile Include="Data\CoffeeClaas.cs" />

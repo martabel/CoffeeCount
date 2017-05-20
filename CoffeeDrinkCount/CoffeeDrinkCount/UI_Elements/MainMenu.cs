@@ -6,20 +6,27 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using CoffeeDrinkCount.Data;
+using CoffeeDrinkCount.Model;
 
 namespace CoffeeDrinkCount.UI_Elements
 {
     class MainMenu : ContentPage
     {
-        CoffeeDatabase coffeedatabase;
+        private ModelCoffeeDatabase modelCoffeeDatabase;
 
-        public MainMenu(CoffeeDatabase _coffeeDatabase)
+        public MainMenu(ModelCoffeeDatabase pModelCoffeeDatabase)
         {
-            coffeedatabase = _coffeeDatabase;
+            modelCoffeeDatabase = pModelCoffeeDatabase;
 
             Title = "Kaffeeverwaltung";
             BackgroundColor = Color.FromHex("DDC9B2");
             Icon = "coffeemachine_2_comlete_white.png";
+
+            ToolbarItem toolbarSettings = new ToolbarItem();
+            toolbarSettings.Icon = "settings_white.png";
+            toolbarSettings.Clicked += ToolbarSettings_Clicked;
+
+            ToolbarItems.Add(toolbarSettings);
 
             ButtonNormalMenu buttonAddContentPageUserSetting = new ButtonNormalMenu("Benutzerverwaltung");
             buttonAddContentPageUserSetting.Clicked += OnAddContentPageAddUserClicked;
@@ -44,6 +51,11 @@ namespace CoffeeDrinkCount.UI_Elements
 
         }
 
+        private void ToolbarSettings_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ContentPageUserSetting(modelCoffeeDatabase));
+        }
+
 
         #region OnButtonAddContentPageUserSetting_Clicked
         /// <summary>
@@ -53,7 +65,7 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="e">Details zum ausgelösten Event</param>
         private void OnButtonAddContentPageUserSetting_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ContentPageAddCoffeeForUser(coffeedatabase));
+            Navigation.PushAsync(new ContentPageAddCoffeeForUser(modelCoffeeDatabase));
         }
         #endregion
 
@@ -65,8 +77,8 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="e">Details zum ausgelösten Event</param>
         private void OnAddContentPageAddUserClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ContentPageUserSetting(coffeedatabase));
-        } 
+            Navigation.PushAsync(new ContentPageUserSetting(modelCoffeeDatabase));
+        }
         #endregion
 
     }

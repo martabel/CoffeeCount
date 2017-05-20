@@ -2208,8 +2208,11 @@ namespace CoffeeDrinkCount.Droid
 			// aapt resource value: 0x7f0200a2
 			public const int mr_ic_play_light = 2130837666;
 			
+			// aapt resource value: 0x7f0200a4
+			public const int notification_template_icon_bg = 2130837668;
+			
 			// aapt resource value: 0x7f0200a3
-			public const int notification_template_icon_bg = 2130837667;
+			public const int settings_white = 2130837667;
 			
 			static Drawable()
 			{

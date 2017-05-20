@@ -6,33 +6,32 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using CoffeeDrinkCount.Data;
+using CoffeeDrinkCount.Model;
 
 namespace CoffeeDrinkCount.UI_Elements
 {
     class ContentPageAddNewUser : ContentPage
     {
-        CoffeeDatabase coffeeDatabase;
-        IEnumerable<CoffeeDrinker> coffeeDrinkerList;
+        private ModelCoffeeDatabase modelCoffeeDatabase;
+       // IEnumerable<CoffeeDrinker> coffeeDrinkerList;
 
         Color backgroundColor = Color.FromHex("DDC9B2");
 
         Color userControlBackgroundColor = Color.Gray;
         Color userControlForegroundcolor = new Color();
 
-        GridForUserInputForString gridUserInputVorname = new GridForUserInputForString("Vorname:", "Bitte angeben", Color.Gray, Color.White);
-        GridForUserInputForString gridUserInputName = new GridForUserInputForString("Name:", "Bitte angeben", Color.Gray, Color.White);
-        GridForUserInputForString gridUserInputChipId = new GridForUserInputForString("ChipId:", "Id z.B. 298746", Color.Gray, Color.White);
+        GridForUserInputForString gridUserInputVorname = new GridForUserInputForString("Vorname:", "Bitte angeben");
+        GridForUserInputForString gridUserInputName = new GridForUserInputForString("Name:", "Bitte angeben");
+        GridForUserInputForString gridUserInputChipId = new GridForUserInputForString("ChipId:", "Id z.B. 298746");
         GridForUserInputList gridUserListForDelete;
         Button buttonAddNewUser = new Button(); // Button zum Erzeugen eines neuen Users
 
 
-        public ContentPageAddNewUser(CoffeeDatabase _coffeedatabase)
+        public ContentPageAddNewUser(ModelCoffeeDatabase pModelCoffeeDatabase)
         {
-            coffeeDatabase = _coffeedatabase; // Daten übergeben
+            modelCoffeeDatabase = pModelCoffeeDatabase; // Daten übergeben
 
-            coffeeDrinkerList = coffeeDatabase.GetCoffeeDrinkers(); // Liste der Kaffeetrinker
-
-            gridUserListForDelete = new GridForUserInputList("Benutzer wählen",coffeeDrinkerList.Select(x => x.Firstname + " " + x.Name).ToList());
+            gridUserListForDelete = new GridForUserInputList("Benutzer wählen",modelCoffeeDatabase.coffeeDrinkerList.Select(x => x.Firstname + " " + x.Name).ToList());
 
             this.Title = "Benutzer hinzufügen"; // Menü überschrift
 
@@ -72,8 +71,7 @@ namespace CoffeeDrinkCount.UI_Elements
                             HorizontalOptions = LayoutOptions.FillAndExpand,
                         },
                         gridUserListForDelete,
-
-        }
+                }
             };
 
             this.Content = scrollView;
@@ -82,7 +80,20 @@ namespace CoffeeDrinkCount.UI_Elements
 
 
         #region ButtonAddNewUser_Clicked
+        /// <summary>
+        /// Wenn der Button betätigt wird, wird ein Neuer Nutzer, wenn er nicht zur Verfügung steht hinzugefügt!
+        /// </summary>
+        /// <param name="sender">Auslöser des Event</param>
+        /// <param name="e">Abrufbare Parameter des Events</param>
         private async void ButtonAddNewUser_Clicked(object sender, EventArgs e)
+        {
+            await addNewCoffeeDrinker();
+        }
+        #endregion
+
+
+        #region addNewCoffeeDrinker
+        private async Task addNewCoffeeDrinker()
         {
             CoffeeDrinker newCoffeeDrinker = new CoffeeDrinker();
 
@@ -97,7 +108,7 @@ namespace CoffeeDrinkCount.UI_Elements
 
                 bool nameIsUsed = false;
 
-                foreach (var item in coffeeDrinkerList)
+                foreach (var item in modelCoffeeDatabase.coffeeDrinkerList)
                 {//Liste aller Kaffetrinker wird durchlaufen
                  // Es wird überprüft, ob der name schon vorhanden ist.
                     if (item.Name == newCoffeeDrinker.Name && item.Firstname == newCoffeeDrinker.Firstname)
@@ -107,10 +118,9 @@ namespace CoffeeDrinkCount.UI_Elements
                     }
                 }
 
-
                 if (nameIsUsed == false)
                 {// Ist der Benutzer noch kein 2. Mal vorhanden wird dieser gespeichert
-                    saveNewCoffeeDrinker(coffeeDatabase, newCoffeeDrinker, coffeeDrinkerList);
+                    saveNewCoffeeDrinker(newCoffeeDrinker, modelCoffeeDatabase);
                 }
                 else
                 {// Wenn der Name schon vorhanden ist, wird eine Fehlermeldung ausgegeben
@@ -120,7 +130,7 @@ namespace CoffeeDrinkCount.UI_Elements
                     if (answer == true)
                     {// Wen der name trotzdem ein 2. mal angelegt werden soll...
                      //dann wir der Benutzer gespeichert
-                        saveNewCoffeeDrinker(coffeeDatabase, newCoffeeDrinker, coffeeDrinkerList);
+                        saveNewCoffeeDrinker(newCoffeeDrinker, modelCoffeeDatabase);
                     }
                 }
             }
@@ -129,11 +139,8 @@ namespace CoffeeDrinkCount.UI_Elements
                 //dann wird dem Nutzer ein Hinweis eingeblendet
                 await DisplayAlert("Speichern nicht möglich!", "Die Felder \"Vorname\" und \"Name\" dürfen nicht leer sein!", "OK");
             }
-
         } 
-
         #endregion
-
 
 
         #region saveNewCoffeeDrinker
@@ -144,15 +151,11 @@ namespace CoffeeDrinkCount.UI_Elements
         /// <param name="coffeeDatabase">Datenbank</param>
         /// <param name="newCoffeeDrinker">Neuer Kaffeetrinker</param>
         /// <param name="coffeeDrinkerList">Liste aller Kaffetrinker aus der Datenbank</param>
-        private async void saveNewCoffeeDrinker(CoffeeDatabase coffeeDatabase, CoffeeDrinker newCoffeeDrinker, IEnumerable<CoffeeDrinker> coffeeDrinkerList)
+        private async void saveNewCoffeeDrinker(CoffeeDrinker newCoffeeDrinker, ModelCoffeeDatabase modelCoffeeDatabase)
         {
             //, dann wir der Benutzer in der Datenbank gespeichert.
-            coffeeDatabase.SaveCoffeeDrinker(newCoffeeDrinker);
-            // Außerdem wird die Liste - zum überprüfen der Namen - aktualisiert
-            coffeeDrinkerList = coffeeDatabase.GetCoffeeDrinkers();
-
+            modelCoffeeDatabase.addCoffeeDrinker(newCoffeeDrinker.Firstname, newCoffeeDrinker.Name, newCoffeeDrinker.ChipId);
             await DisplayAlert("Speichern erfolgreich!", "Benutzer erfolgreich hinzugefügt", "OK");
-
         } 
         #endregion
 
